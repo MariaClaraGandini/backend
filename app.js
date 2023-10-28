@@ -1,11 +1,12 @@
-require('dotenv').config();
 const express = require('express');
 const mongoose = require('mongoose');
 const cors = require('cors');
-const axios = require('axios');
+const dotenv = require('dotenv');
 
 const authController = require('./controllers/authController'); // Importar seu controlador
-const videosController = require('./controllers/videosController'); // Importar controlador de vídeos
+const budgetController = require('./controllers/budgetController');
+
+dotenv.config(); // Carregue as variáveis de ambiente do arquivo .env
 
 mongoose.set('strictQuery', false);
 
@@ -13,7 +14,6 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
-const User = require('./models/User');
 
 app.get('/', (req, res) => {
   res.status(200).json({ msg: 'Bem-vindo à API' });
@@ -30,18 +30,15 @@ app.get('/user/:id', authController.checkToken, authController.usuarioexistetoke
 // Rota para fazer logout no lado do servidor (removendo o token do cookie)
 app.get('/auth/logout', authController.logout);
 
-// Rota para buscar vídeos do canal
-app.get('/videos', videosController.exibirvideos); // Use o controlador de vídeos
+app.post('/budget/create', budgetController.create)
 
-//Conexão com o BD
 
+// Conexão com o BD
 const dbUser = process.env.DB_USER;
-const dbpassword = process.env.DB_PASS;
+const dbPassword = process.env.DB_PASS;
 
-mongoose
-  .connect(`mongodb+srv://${dbUser}:${dbpassword}@cluster0.g6l4y4r.mongodb.net/`)
-  .then(() => {
-    app.listen(5000);
-    console.log('Conectou ao BD');
-  })
-  .catch((err) => console.log(err));
+mongoose.connect(`mongodb+srv://${dbUser}:${dbPassword}@cluster0.g6l4y4r.mongodb.net/?retryWrites=true&w=majority`).then(()=>{	
+	app.listen(5000)
+	console.log("conectou o bd")
+}).catch((err) => console.log(err))
+

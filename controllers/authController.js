@@ -2,11 +2,6 @@ const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const User = require('../models/User');
 
-
-
-
-
-
 // Função para registro de usuário
 exports.register = async (req, res) => {
   try {
@@ -111,7 +106,7 @@ exports.login = async (req, res) => {
 
 //CHECAR TOKEN
 exports.checkToken = (req, res, next) => {
-  const authHeader = req.headers['authorization'];
+ const authHeader = req.headers['authorization'];
   const token = authHeader && authHeader.split(' ')[1];
 
   if (!token) {
@@ -119,7 +114,7 @@ exports.checkToken = (req, res, next) => {
   }
 
   try {
-    const secret = process.env.SECRET;
+    const secret =  process.env.SECRET;
     const decoded = jwt.verify(token, secret);
 
     next(); // Continue com a rota protegida.
