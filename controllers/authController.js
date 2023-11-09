@@ -62,12 +62,6 @@ exports.register = async (req, res) => {
   }
 };
 
-
-
-
-
-
-
 // LOGIN USUÁRIO
 exports.login = async (req, res) => {
   try {

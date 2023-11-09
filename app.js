@@ -2,6 +2,8 @@ const express = require('express');
 const mongoose = require('mongoose');
 const cors = require('cors');
 const dotenv = require('dotenv');
+const nodemailer = require ('nodemailer');
+
 
 const authController = require('./controllers/authController'); // Importar seu controlador
 const budgetController = require('./controllers/budgetController');
@@ -32,6 +34,38 @@ app.get('/auth/logout', authController.logout);
 
 app.post('/budget/create', budgetController.create)
 
+
+app.get('/send', (req, res) => {
+	const transport = nodemailer.createTransport({
+		host: 'smtp-mail.outlook.com',
+		port: 587,
+		secure: false,
+		auth: {
+			user: 'mariaclaragandinipereira@outlook.com',
+			pass: 'Clara1317',
+		},
+		tls: {
+			rejectUnauthorized: false
+		}
+	});
+	
+
+    transport.sendMail({
+        from: 'Manual do Dev <mariaclaragandinipereira@outlook.com>',
+        to: 'mariaclaragandinipereira@outlook.com',
+        subject: 'Orçamento email com Nodemailer',
+        html: '<h1>teste</h1>',
+        text: 'teste',
+    }).then(info => {
+        console.log("e-mail enviado com suesso");
+		res.send(info);
+
+    }).catch(error => {
+		console.log(error);
+
+        res.send(error);
+    });
+});
 
 // Conexão com o BD
 const dbUser = process.env.DB_USER;
