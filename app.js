@@ -3,18 +3,20 @@ const mongoose = require('mongoose');
 const cors = require('cors');
 const dotenv = require('dotenv');
 const nodemailer = require ('nodemailer');
-
-
 const authController = require('./controllers/authController'); // Importar seu controlador
 const budgetController = require('./controllers/budgetController');
+const eventController = require('./controllers/eventController')
 
-dotenv.config(); // Carregue as variáveis de ambiente do arquivo .env
-
-mongoose.set('strictQuery', false);
 
 const app = express();
 app.use(cors());
 app.use(express.json());
+app.use(express.urlencoded({
+	extended:true,
+}));
+dotenv.config(); // Carregue as variáveis de ambiente do arquivo .env
+
+mongoose.set('strictQuery', false);
 
 
 app.get('/', (req, res) => {
@@ -33,6 +35,11 @@ app.get('/user/:id', authController.checkToken, authController.usuarioexistetoke
 app.get('/auth/logout', authController.logout);
 
 app.post('/budget/create', budgetController.create)
+app.get('/budget/getAll', budgetController.getAll)
+
+app.post('/event/create', eventController.create)
+app.get('/event/getAll', eventController.getAll)
+
 
 
 app.get('/send', (req, res) => {
