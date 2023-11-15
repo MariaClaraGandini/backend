@@ -40,6 +40,8 @@ app.get('/budget/getAll', budgetController.getAll)
 app.post('/event/create', eventController.create)
 app.get('/event/getAll', eventController.getAll)
 app.get('/event/getEvent/:id', eventController.getEvent)
+app.put('/event/edit/:id', eventController.edit)
+app.delete('/event/delete/:id', eventController.delete)
 
 
 

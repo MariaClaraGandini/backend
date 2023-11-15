@@ -7,8 +7,8 @@ exports.create = async (req, res) => {
 const { title, start, local, description } = req.body;
 
 if(!title || !start  || !local){
+  console.log('preenchatudo')
   return res.status(422).json({msg: 'Preencha todos os campos necessários!'})
-
 }
 
 const event = new Event({
@@ -51,5 +51,51 @@ const event = new Event({
     const event = await Event.findById(id);
     res.status(200).json({ event });
   }
+
+  exports.edit = async (req, res) => {
+
+    try{
+    const id = req.params.id;
+    const eventData = req.body; 
+    const event = await Event.findById(id);
   
+    if(!event){
+      res.status(404).json({ msg: 'Evento não encontrado' });
+  
+    }
+  
+    event.title = eventData.title;
+    event.start = eventData.start;
+    event.local = eventData.local;
+    event.description = eventData.description || event.description;
+  
+    await event.save();
+    res.status(201).json({ msg: 'Evento registrado com sucesso' });
+  
+  
+    }catch{
+      console.error(error);
+      res.status(500).json({ msg: 'Erro ao editar o evento' });
+    }
+
+  }
+  
+  
+  exports.delete = async (req, res) => {
+    try {
+      const id = req.params.id;
+      const event = await Event.findById(id);
+  
+      if (!event) {
+        return res.status(404).json({ msg: 'Evento não encontrado' });
+      }
+  
+      await event.remove();
+  
+      res.status(201).json({ msg: 'Evento excluído com sucesso' });
+    } catch (error) {
+      console.error(error);
+      res.status(500).json({ msg: 'Erro ao excluir o evento' });
+    }
+  };
   
