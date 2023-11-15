@@ -39,6 +39,7 @@ app.get('/budget/getAll', budgetController.getAll)
 
 app.post('/event/create', eventController.create)
 app.get('/event/getAll', eventController.getAll)
+app.get('/event/getEvent/:id', eventController.getEvent)
 
 
 
