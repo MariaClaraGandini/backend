@@ -16,6 +16,20 @@ app.use(express.urlencoded({
 }));
 dotenv.config(); // Carregue as variáveis de ambiente do arquivo .env
 
+
+
+
+
+
+app.use((req, res, next) => {
+	console.log('Request received:', req.method, req.url);
+	res.setHeader('Access-Control-Allow-Origin', '*');
+	res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE');
+	res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization');
+	next();
+  });
+
+
 mongoose.set('strictQuery', false);
 
 
@@ -42,6 +56,7 @@ app.get('/event/getAll', eventController.getAll)
 app.get('/event/getEvent/:id', eventController.getEvent)
 app.put('/event/edit/:id', eventController.edit)
 app.delete('/event/delete/:id', eventController.delete)
+app.delete('/event/deteleAll', eventController.deleteAll)
 
 
 

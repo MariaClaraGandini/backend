@@ -99,3 +99,14 @@ const event = new Event({
     }
   };
   
+   exports.deleteAll = async (req, res) => {
+    try {
+      const events = await Event.find();
+      await events.remove();
+      res.status(201).json({ msg: 'Eventos excluído com sucesso' });
+
+    } catch (error) {
+      console.error(error);
+      res.status(500).json({ msg: 'Erro ao obter os eventos' });
+    }
+  };

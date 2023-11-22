@@ -86,7 +86,7 @@ exports.login = async (req, res) => {
     const secret = process.env.SECRET;
     const token = jwt.sign({ id: user._id }, secret);
 
-    res.status(200).json({ msg: 'Autenticação bem-sucedida', token });
+    res.status(200).json({ msg: 'Autenticação bem-sucedida', token, user: { name: user.name}  });
   } catch (error) {
     console.error(error);
     res.status(500).json({ msg: 'Erro no servidor ao fazer login' });
@@ -131,9 +131,6 @@ exports.usuarioexistetoken =async (req, res) => {
   }
   res.status(200).json({ user });
 }
-
-
-
 
 
 
